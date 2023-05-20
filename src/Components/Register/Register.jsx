@@ -6,7 +6,6 @@ import {
   MDBCol,
   MDBRow,
   MDBInput,
-  MDBCheckbox,
   MDBIcon,
 } from "mdb-react-ui-kit";
 

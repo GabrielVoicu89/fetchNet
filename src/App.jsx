@@ -4,6 +4,7 @@ import Post from "./Components/Post/Post";
 import Posts from "./Components/Posts/Posts";
 import Register from "./Components/Register/Register";
 import Navbar from "./assets/Nav/Navbar";
+import CreatePost from "./Components/CreatePost/CreatePost";
 
 function App() {
   return (
@@ -12,13 +13,7 @@ function App() {
         <Navbar />
       </div>
       <div>
-        <Login />
-      </div>
-      <div>
-        <Register />
-      </div>
-      <div>
-        <Post />
+        <CreatePost />
       </div>
       <div>
         <Posts />

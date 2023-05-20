@@ -10,7 +10,13 @@ import Post from "../Post/Post";
 
 export default function Posts() {
   return (
-    <MDBCard className="m-5 shadow-5" style={{}}>
+    <MDBCard
+      className="m-5"
+      style={{
+        backgroundColor: "aliceblue",
+        maxWidth: "1920px",
+      }}
+    >
       <MDBCardBody>
         <Post />
         <Post />
