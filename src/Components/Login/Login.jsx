@@ -10,6 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import Navbar from "../../assets/Nav/Navbar";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [inputMail, setInputMail] = useState("");
@@ -46,7 +47,9 @@ export default function Login() {
     console.log("token:", data.token);
     console.log("success", data.success);
     if (data.success === true) {
-      setMessage(data.token);
+      setMessage(<Link to="/">You are conected click here to redirect</Link>);
+
+      localStorage.setItem("token", data.token);
     } else {
       setMessage(data.message);
     }
@@ -105,6 +108,7 @@ export default function Login() {
                 >
                   SIGN UP NOW
                 </MDBBtn>
+
                 <span>{message}</span>
               </MDBCardBody>
             </MDBCard>
