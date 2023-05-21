@@ -5,6 +5,7 @@ import {
   MDBBreadcrumb,
   MDBBreadcrumbItem,
 } from "mdb-react-ui-kit";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
@@ -23,13 +24,16 @@ export default function Navbar() {
           <nav aria-label="breadcrumb">
             <MDBBreadcrumb>
               <MDBBreadcrumbItem>
-                <a href="#">Home</a>
+                <Link to="/">Home</Link>
               </MDBBreadcrumbItem>
               <MDBBreadcrumbItem>
-                <a href="#">Login</a>
+                <Link to="/Login">Login</Link>
+              </MDBBreadcrumbItem>
+              <MDBBreadcrumbItem>
+                <Link to="/Register">Register</Link>
               </MDBBreadcrumbItem>
               <MDBBreadcrumbItem active aria-current="page">
-                <a href="#">Profile</a>
+                <Link to="/Profile">Profile</Link>
               </MDBBreadcrumbItem>
             </MDBBreadcrumb>
           </nav>

@@ -1,23 +1,11 @@
 import "./App.css";
-import Login from "./Components/Login/Login";
-import Post from "./Components/Post/Post";
-import Posts from "./Components/Posts/Posts";
-import Register from "./Components/Register/Register";
-import Navbar from "./assets/Nav/Navbar";
-import CreatePost from "./Components/CreatePost/CreatePost";
+import { RouterProvider } from "react-router";
+import Router from "./assets/Router/Router";
 
 function App() {
   return (
     <>
-      <div>
-        <Navbar />
-      </div>
-      <div>
-        <CreatePost />
-      </div>
-      <div>
-        <Posts />
-      </div>
+      <RouterProvider router={Router} />
     </>
   );
 }
