@@ -1,7 +1,10 @@
+import Navbar from "../../assets/Nav/Navbar";
+
 import { MDBContainer, MDBRow, MDBCol, MDBBtn } from "mdb-react-ui-kit";
 export default function Profile() {
   return (
     <div>
+      <Navbar />
       <section className="text-center text-md-start">
         <div
           className="p-5 bg-image"

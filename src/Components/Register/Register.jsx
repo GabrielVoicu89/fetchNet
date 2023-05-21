@@ -6,102 +6,125 @@ import {
   MDBCol,
   MDBRow,
   MDBInput,
-  MDBCheckbox,
-  MDBIcon,
 } from "mdb-react-ui-kit";
+import Navbar from "../../assets/Nav/Navbar";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Register() {
+  const [firstName, setInputFirstName] = useState("");
+  const [lastName, setInputLastName] = useState("");
+  const [inputMail, setInputMail] = useState("");
+  const [inputPass, setInputPass] = useState("");
+  const [message, setMessage] = useState("");
+
+  const handleMail = (e) => {
+    setInputMail(e.target.value);
+  };
+
+  const handlePass = (e) => {
+    setInputPass(e.target.value);
+  };
+
+  const handleFirstName = (e) => {
+    setInputFirstName(e.target.value);
+  };
+
+  const handleLastName = (e) => {
+    setInputLastName(e.target.value);
+  };
+
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      firstname: firstName,
+      lastname: lastName,
+      email: inputMail,
+      password: inputPass,
+    }),
+  };
+
+  const clickRegister = async () => {
+    const response = await fetch(
+      " https://social-network-api.osc-fr1.scalingo.io/demo/register ",
+      options
+    );
+    const data = await response.json();
+
+    console.log("array:", data);
+    if (data.success === true) {
+      setMessage(
+        <Link to="/Login">You are registered click here to connect</Link>
+      );
+    } else {
+      setMessage(data.message);
+    }
+  };
+
   return (
-    <MDBContainer fluid>
-      <MDBRow className="d-flex justify-content-center align-items-center h-100">
-        <MDBCard
-          className="mx-5 mb-5  shadow-5"
-          style={{
-            background: "hsla(0, 0%, 100%, 0.8)",
-            backdropFilter: "blur(30px)",
-            maxWidth: "500px",
-          }}
-        >
-          <MDBCardBody className="p-5 text-center">
-            <h2 className="fw-bold mb-5">Sign up now</h2>
+    <div>
+      <Navbar />
+      <MDBContainer fluid>
+        <MDBRow className="d-flex justify-content-center align-items-center h-100">
+          <MDBCard
+            className="my-5 mb-5  shadow-5"
+            style={{
+              background: "hsla(0, 0%, 100%, 0.8)",
+              backdropFilter: "blur(30px)",
+              maxWidth: "500px",
+            }}
+          >
+            <MDBCardBody className="p-5 text-center">
+              <h2 className="fw-bold mb-5">Sign up now</h2>
 
-            <MDBRow>
-              <MDBCol col="6">
-                <MDBInput
-                  wrapperClass="mb-4"
-                  label="First name"
-                  id="form1"
-                  type="text"
-                />
-              </MDBCol>
+              <MDBRow>
+                <MDBCol col="6">
+                  <MDBInput
+                    onChange={handleFirstName}
+                    wrapperClass="mb-4"
+                    label="First name"
+                    id="form1"
+                    type="text"
+                  />
+                </MDBCol>
 
-              <MDBCol col="6">
-                <MDBInput
-                  wrapperClass="mb-4"
-                  label="Last name"
-                  id="form1"
-                  type="text"
-                />
-              </MDBCol>
-            </MDBRow>
+                <MDBCol col="6">
+                  <MDBInput
+                    onChange={handleLastName}
+                    wrapperClass="mb-4"
+                    label="Last name"
+                    id="form1"
+                    type="text"
+                  />
+                </MDBCol>
+              </MDBRow>
 
-            <MDBInput
-              wrapperClass="mb-4"
-              label="Email"
-              id="form1"
-              type="email"
-            />
-            <MDBInput
-              wrapperClass="mb-4"
-              label="Password"
-              id="form1"
-              type="password"
-            />
+              <MDBInput
+                onChange={handleMail}
+                wrapperClass="mb-4"
+                label="Email"
+                id="form1"
+                type="email"
+              />
+              <MDBInput
+                onChange={handlePass}
+                wrapperClass="mb-4"
+                label="Password"
+                id="form1"
+                type="password"
+              />
 
-            <MDBBtn className="w-100 mb-4" size="lg">
-              sign up
-            </MDBBtn>
-
-            <div className="text-center">
-              <MDBBtn
-                tag="a"
-                color="none"
-                className="mx-3"
-                style={{ color: "#1266f1" }}
-              >
-                <MDBIcon fab icon="facebook-f" size="sm" />
+              <MDBBtn onClick={clickRegister} className="w-100 mb-4" size="lg">
+                sign up
               </MDBBtn>
-
-              <MDBBtn
-                tag="a"
-                color="none"
-                className="mx-3"
-                style={{ color: "#1266f1" }}
-              >
-                <MDBIcon fab icon="twitter" size="sm" />
-              </MDBBtn>
-
-              <MDBBtn
-                tag="a"
-                color="none"
-                className="mx-3"
-                style={{ color: "#1266f1" }}
-              >
-                <MDBIcon fab icon="google" size="sm" />
-              </MDBBtn>
-
-              <MDBBtn
-                tag="a"
-                color="none"
-                className="mx-3"
-                style={{ color: "#1266f1" }}
-              >
-                <MDBIcon fab icon="github" size="sm" />
-              </MDBBtn>
-            </div>
-          </MDBCardBody>
-        </MDBCard>
-      </MDBRow>
-    </MDBContainer>
+              <span>{message}</span>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBRow>
+      </MDBContainer>
+    </div>
   );
 }
