@@ -14,6 +14,7 @@ import { useState } from "react";
 export default function Login() {
   const [inputMail, setInputMail] = useState("");
   const [inputPass, setInputPass] = useState("");
+  const [message, setMessage] = useState("");
   //recovering the value of mail
   const handleMail = (e) => {
     setInputMail(e.target.value);
@@ -43,6 +44,12 @@ export default function Login() {
 
     console.log("array:", data);
     console.log("token:", data.token);
+    console.log("success", data.success);
+    if (data.success === true) {
+      setMessage(data.token);
+    } else {
+      setMessage(data.message);
+    }
   };
 
   return (
@@ -98,6 +105,7 @@ export default function Login() {
                 >
                   SIGN UP NOW
                 </MDBBtn>
+                <span>{message}</span>
               </MDBCardBody>
             </MDBCard>
           </MDBCol>
