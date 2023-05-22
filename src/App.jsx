@@ -5,7 +5,7 @@ import Router from "./assets/Router/Router";
 function App() {
   return (
     <>
-      <RouterProvider npm runrouter={Router} />
+      <RouterProvider router={Router} />
     </>
   );
 }
