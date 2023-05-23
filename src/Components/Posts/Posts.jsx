@@ -17,9 +17,7 @@ export default function Posts() {
   const token = localStorage.getItem("token");
   const [post, setPost] = useState("");
   const [title, setTitle] = useState("");
-
-  const [showShowc, setShowShowc] = useState(false);
-  const toggleShowc = () => setShowShowc(!showShowc);
+  const [comment, setComment] = useState("");
 
   const options = {
     method: "GET",
@@ -58,7 +56,7 @@ export default function Posts() {
   const handleTitle = (e) => {
     setTitle(e.target.value);
   };
-
+  // function for POSTING
   const clickAdd = async () => {
     const response = await fetch(
       " https://social-network-api.osc-fr1.scalingo.io/demo/post ",
@@ -79,38 +77,7 @@ export default function Posts() {
     }
   };
 
-  const addComment = async (postId, parComment) => {
-    const optioncomment = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${token}`,
-      },
-      body: JSON.stringify({
-        postId: postId,
-        content: parComment,
-      }),
-    };
-    const response = await fetch(
-      " https://social-network-api.osc-fr1.scalingo.io/demo/post/comment",
-      optioncomment
-    );
-    const data = await response.json();
-    if (data.success === true) {
-      getPosts();
-      setShowShowc(false);
-    } else {
-      if (data.message === "Invalid token.") {
-        alert("Please login before commenting");
-      } else {
-        alert(data.message);
-      }
-    }
-  };
-  const [comment, setComment] = useState("");
-  const handleComment = (e) => {
-    setComment(e.target.value);
-  };
+  //function for LIKING
   const addLike = async (postId) => {
     const optionlike = {
       method: "POST",
@@ -142,21 +109,43 @@ export default function Posts() {
     getPosts();
   }, []);
 
+  // function for COMMENTING
+  const addComment = async (postId, parComment) => {
+    const optioncomment = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `bearer ${token}`,
+      },
+      body: JSON.stringify({
+        postId: postId,
+        content: parComment,
+      }),
+    };
+    const response = await fetch(
+      " https://social-network-api.osc-fr1.scalingo.io/demo/post/comment",
+      optioncomment
+    );
+    const data = await response.json();
+    if (data.success === true) {
+      getPosts();
+    } else {
+      if (data.message === "Invalid token.") {
+        alert("Please login before commenting");
+      } else {
+        alert(data.message);
+      }
+    }
+  };
+  const handleComment = (e) => {
+    setComment(e.target.value);
+  };
+
   const render = () => {
     return posts.map((item, index) => {
-      let testindex;
       return (
         <div key={index}>
           <Post
-            toggleShowc={() => {
-              testindex = index;
-              console.log("testindex toogle", testindex);
-              console.log("index toogle", index);
-              if (testindex === index) {
-                toggleShowc();
-              } else return showShowc;
-            }}
-            showShowc={showShowc}
             title={item.title}
             content={item.content}
             addComment={() => addComment(item._id, comment)}

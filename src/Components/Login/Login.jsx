@@ -10,7 +10,7 @@ import {
 } from "mdb-react-ui-kit";
 import Navbar from "../../assets/Nav/Navbar";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [inputMail, setInputMail] = useState("");
@@ -36,7 +36,7 @@ export default function Login() {
       password: inputPass,
     }),
   };
-
+  const navigate = useNavigate();
   const clickLogin = async () => {
     const response = await fetch(
       " https://social-network-api.osc-fr1.scalingo.io/demo/login ",
@@ -44,11 +44,9 @@ export default function Login() {
     );
     const data = await response.json();
 
-    console.log("array:", data);
-    console.log("token:", data.token);
-    console.log("success", data.success);
     if (data.success === true) {
       setMessage(<Link to="/">You are conected click here to redirect</Link>);
+      navigate("/");
 
       localStorage.setItem("token", data.token);
     } else {

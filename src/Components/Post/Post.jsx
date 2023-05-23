@@ -10,8 +10,12 @@ import {
   MDBCollapse,
   MDBInputGroup,
 } from "mdb-react-ui-kit";
-
+import "./Post.css";
+import { useState } from "react";
 export default function Post(props) {
+  const [showShow, setShowShow] = useState(false);
+  const toggleShow = () => setShowShow(!showShow);
+
   return (
     <div key={props}>
       <MDBCard className="mx-5 my-5 shadow-5">
@@ -19,7 +23,7 @@ export default function Post(props) {
           <MDBCardHeader>
             <MDBCardTitle>{props.title}</MDBCardTitle>
             <MDBCardText>{props.content}</MDBCardText>
-            <MDBBtn onClick={props.toggleShowc} className="mx-1 p-1">
+            <MDBBtn onClick={toggleShow} className="mx-1 p-1">
               <MDBIcon far icon="comment-dots" size="3x" />
             </MDBBtn>
 
@@ -30,7 +34,7 @@ export default function Post(props) {
               </MDBBadge>
             </MDBBtn>
           </MDBCardHeader>
-          <MDBCollapse show={props.showShowc}>
+          <MDBCollapse show={showShow}>
             <div>
               <MDBInputGroup style={{ height: 100 }}>
                 <textarea
@@ -39,7 +43,15 @@ export default function Post(props) {
                   className="form-control"
                 />
               </MDBInputGroup>
-              <MDBBtn className="m-2" onClick={props.addComment}>
+              <MDBBtn
+                className="m-2"
+                onClick={() => {
+                  {
+                    props.addComment();
+                  }
+                  toggleShow();
+                }}
+              >
                 ADD
               </MDBBtn>
             </div>
