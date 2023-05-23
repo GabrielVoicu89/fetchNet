@@ -18,8 +18,6 @@ export default function Posts() {
   const [post, setPost] = useState("");
   const [title, setTitle] = useState("");
 
-  const [comments, setComments] = useState([]);
-
   const options = {
     method: "GET",
     headers: {
@@ -95,6 +93,7 @@ export default function Posts() {
       optioncomment
     );
     const data = await response.json();
+    setShowShow(false);
     getPosts();
   };
   const [comment, setComment] = useState("");
