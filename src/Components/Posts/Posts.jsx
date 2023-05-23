@@ -18,6 +18,9 @@ export default function Posts() {
   const [post, setPost] = useState("");
   const [title, setTitle] = useState("");
 
+  const [showShowc, setShowShowc] = useState(false);
+  const toggleShowc = () => setShowShowc(!showShowc);
+
   const options = {
     method: "GET",
     headers: {
@@ -93,12 +96,46 @@ export default function Posts() {
       optioncomment
     );
     const data = await response.json();
-    setShowShow(false);
-    getPosts();
+    if (data.success === true) {
+      getPosts();
+      setShowShowc(false);
+    } else {
+      if (data.message === "Invalid token.") {
+        alert("Please login before commenting");
+      } else {
+        alert(data.message);
+      }
+    }
   };
   const [comment, setComment] = useState("");
   const handleComment = (e) => {
     setComment(e.target.value);
+  };
+  const addLike = async (postId) => {
+    const optionlike = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `bearer ${token}`,
+      },
+      body: JSON.stringify({
+        postId: postId,
+      }),
+    };
+    const response = await fetch(
+      " https://social-network-api.osc-fr1.scalingo.io/demo/post/like",
+      optionlike
+    );
+    const data = await response.json();
+    if (data.success === true) {
+      getPosts();
+    } else {
+      if (data.message === "Invalid token.") {
+        alert("Please login before liking");
+      } else {
+        alert(data.message);
+      }
+    }
   };
 
   useEffect(() => {
@@ -107,13 +144,24 @@ export default function Posts() {
 
   const render = () => {
     return posts.map((item, index) => {
+      let testindex;
       return (
-        <div>
+        <div key={index}>
           <Post
-            key={index}
+            toggleShowc={() => {
+              testindex = index;
+              console.log("testindex toogle", testindex);
+              console.log("index toogle", index);
+              if (testindex === index) {
+                toggleShowc();
+              } else return showShowc;
+            }}
+            showShowc={showShowc}
             title={item.title}
             content={item.content}
             addComment={() => addComment(item._id, comment)}
+            addLike={() => addLike(item._id)}
+            likes={item.likes.length}
             handleComment={handleComment}
             comments={item.comments.map((comment) => (
               <p key={comment._id}>{comment.content}</p>
