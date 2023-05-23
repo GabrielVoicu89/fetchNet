@@ -12,24 +12,16 @@ import {
 } from "mdb-react-ui-kit";
 import { useState } from "react";
 
-export default function Post() {
+export default function Post(props) {
   const [showShow, setShowShow] = useState(false);
   const toggleShow = () => setShowShow(!showShow);
   return (
-    <div>
+    <div key={props}>
       <MDBCard className="mx-5 my-5 shadow-5">
         <MDBCardBody>
           <MDBCardHeader>
-            <MDBCardTitle>Author</MDBCardTitle>
-            <MDBCardText>
-              POST : Some quick example text to build on the card title and make
-              up the bulk of the card's content. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Quas illum dolorem fuga cumque
-              maxime numquam quibusdam unde eaque nisi, non sint officiis
-              mollitia iure perferendis architecto asperiores soluta sunt. At!
-              up the bulk of the card's content. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit.
-            </MDBCardText>
+            <MDBCardTitle>{props.title}</MDBCardTitle>
+            <MDBCardText>{props.content}</MDBCardText>
             <MDBBtn onClick={toggleShow} className="mx-1 p-1">
               <MDBIcon far icon="comment-dots" size="3x" />
             </MDBBtn>
@@ -44,15 +36,20 @@ export default function Post() {
           <MDBCollapse show={showShow}>
             <div>
               <MDBInputGroup style={{ height: 100 }}>
-                <textarea style={{ height: 100 }} className="form-control" />
+                <textarea
+                  onChange={props.handleComment}
+                  style={{ height: 100 }}
+                  className="form-control"
+                />
               </MDBInputGroup>
-              <MDBBtn className="m-2" onClick={toggleShow}>
+              <MDBBtn className="m-2" onClick={props.addComment}>
                 ADD
               </MDBBtn>
             </div>
           </MDBCollapse>
 
           <MDBCardBody className="pb-0"></MDBCardBody>
+          <div className="comments">{props.comments}</div>
         </MDBCardBody>
       </MDBCard>
     </div>

@@ -16,6 +16,7 @@ export default function Login() {
   const [inputMail, setInputMail] = useState("");
   const [inputPass, setInputPass] = useState("");
   const [message, setMessage] = useState("");
+
   //recovering the value of mail
   const handleMail = (e) => {
     setInputMail(e.target.value);
