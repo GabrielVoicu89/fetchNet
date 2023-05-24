@@ -100,6 +100,32 @@ export default function Posts() {
   const handleComment = (e) => {
     setComment(e.target.value);
   };
+  const addLikes = async (postId) => {
+    const optionlike = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `bearer ${token}`,
+      },
+      body: JSON.stringify({
+        postId: postId,
+      }),
+    };
+    const response = await fetch(
+      " https://social-network-api.osc-fr1.scalingo.io/demo/post/like",
+      optionlike
+    );
+    const data = await response.json();
+    if (data.success === true) {
+      getPosts();
+    } else {
+      if (data.message === "Invalid token.") {
+        alert("Please login before liked");
+      } else {
+        alert(data.message);
+      }
+    }
+  };
 
   useEffect(() => {
     getPosts();
@@ -108,15 +134,28 @@ export default function Posts() {
   const render = () => {
     return posts.map((item, index) => {
       return (
-        <div>
+        <div key={index}>
           <Post
-            key={index}
             title={item.title}
             content={item.content}
             addComment={() => addComment(item._id, comment)}
+            addLike={() => addLikes(item._id)}
+            likes={item.likes.length}
             handleComment={handleComment}
             comments={item.comments.map((comment) => (
-              <p key={comment._id}>{comment.content}</p>
+              <div
+                key={comment._id}
+                className="m-2 "
+                style={{
+                  borderRadius: "5px",
+                  height: "30px",
+                  backgroundColor: "aliceblue",
+                }}
+              >
+                <p style={{ marginLeft: "1em", marginTop: "0.1em" }}>
+                  {comment.content}
+                </p>
+              </div>
             ))}
           />
         </div>

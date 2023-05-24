@@ -1,6 +1,16 @@
 import Navbar from "../../assets/Nav/Navbar";
+import Posts from "../../Components/Posts/Posts";
 
-import { MDBContainer, MDBRow, MDBCol, MDBBtn } from "mdb-react-ui-kit";
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBBtn,
+  MDBCard,
+  MDBCardBody,
+  MDBCardText,
+  MDBCardHeader,
+} from "mdb-react-ui-kit";
 export default function Profile() {
   return (
     <div>
@@ -51,6 +61,74 @@ export default function Profile() {
           </MDBContainer>
         </div>
       </section>
+      <div className="d-flex">
+        <MDBCol className="mt-5 ms-3" lg="3">
+          <MDBCard className="mb-4">
+            <MDBCardHeader className="d-flex justify-content-center align-items-center bg-primary text-light">
+              Informations
+            </MDBCardHeader>
+            <MDBCardBody>
+              <MDBRow>
+                <MDBCol sm="3">
+                  <MDBCardText>Full Name</MDBCardText>
+                </MDBCol>
+                <MDBCol sm="9">
+                  <MDBCardText className="text-muted">
+                    Johnatan Smith
+                  </MDBCardText>
+                </MDBCol>
+              </MDBRow>
+              <hr />
+              <MDBRow>
+                <MDBCol sm="3">
+                  <MDBCardText>Email</MDBCardText>
+                </MDBCol>
+                <MDBCol sm="9">
+                  <MDBCardText className="text-muted">
+                    example@example.com
+                  </MDBCardText>
+                </MDBCol>
+              </MDBRow>
+              <hr />
+              <MDBRow>
+                <MDBCol sm="3">
+                  <MDBCardText>Phone</MDBCardText>
+                </MDBCol>
+                <MDBCol sm="9">
+                  <MDBCardText className="text-muted">
+                    (097) 234-5678
+                  </MDBCardText>
+                </MDBCol>
+              </MDBRow>
+              <hr />
+              <MDBRow>
+                <MDBCol sm="3">
+                  <MDBCardText>Mobile</MDBCardText>
+                </MDBCol>
+                <MDBCol sm="9">
+                  <MDBCardText className="text-muted">
+                    (098) 765-4321
+                  </MDBCardText>
+                </MDBCol>
+              </MDBRow>
+              <hr />
+              <MDBRow>
+                <MDBCol sm="3">
+                  <MDBCardText>Address</MDBCardText>
+                </MDBCol>
+                <MDBCol sm="9">
+                  <MDBCardText className="text-muted">
+                    Bay Area, San Francisco, CA
+                  </MDBCardText>
+                </MDBCol>
+              </MDBRow>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>{" "}
+        <div className="flex-grow-1 w-1">
+          <Posts />
+        </div>
+      </div>
     </div>
   );
 }
