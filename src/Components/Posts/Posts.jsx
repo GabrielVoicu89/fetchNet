@@ -175,7 +175,7 @@ export default function Posts() {
             title={item.title}
             content={item.content}
             addComment={() => addComment(item._id, comment)}
-            addLike={() => addLikes(item._id)}
+            addLike={() => addLike(item._id)}
             likes={item.likes.length}
             handleComment={handleComment}
             comments={item.comments.map((comment) => (
