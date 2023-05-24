@@ -37,15 +37,27 @@ export default function Navbar() {
 
   if (token != null) {
     login = (
-      <Link to="/Login" onClick={clearStorage}>
+      <Link className="text-light" to="/Login" onClick={clearStorage}>
         Logout
       </Link>
     );
 
-    register = <Link to="/Profile">Welcome {firstName}</Link>;
+    register = (
+      <Link className="text-light" to="/Profile">
+        Welcome {firstName}
+      </Link>
+    );
   } else {
-    login = <Link to="/Login">Login</Link>;
-    register = <Link to="/Register">Register</Link>;
+    login = (
+      <Link className="text-light" to="/Login">
+        Login
+      </Link>
+    );
+    register = (
+      <Link className="text-light" to="/Register">
+        Register
+      </Link>
+    );
   }
 
   return (
@@ -59,12 +71,16 @@ export default function Navbar() {
               alt=""
               loading="lazy"
             />
-            fetchNet
+            <Link to="/" className="text-light">
+              FetchNet
+            </Link>
           </MDBNavbarBrand>
           <nav aria-label="breadcrumb">
             <MDBBreadcrumb>
               <MDBBreadcrumbItem>
-                <Link to="/">Home</Link>
+                <Link to="/" className="text-light">
+                  Home
+                </Link>
               </MDBBreadcrumbItem>
               <MDBBreadcrumbItem>{login}</MDBBreadcrumbItem>
               <MDBBreadcrumbItem>{register}</MDBBreadcrumbItem>
