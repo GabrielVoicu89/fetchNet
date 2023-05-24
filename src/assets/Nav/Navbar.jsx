@@ -5,7 +5,6 @@ import {
   MDBBreadcrumb,
   MDBBreadcrumbItem,
 } from "mdb-react-ui-kit";
-import { useState } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -16,24 +15,7 @@ export default function Navbar() {
   const clearStorage = () => {
     localStorage.clear();
   };
-
-  const [firstName, setFirstName] = useState("");
-  const getUser = async () => {
-    const options = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${token}`,
-      },
-    };
-    const response = await fetch(
-      " https://social-network-api.osc-fr1.scalingo.io/demo/user ",
-      options
-    );
-    const data = await response.json();
-    setFirstName(data.firstname);
-  };
-  getUser();
+  const test = localStorage.getItem("firstname");
 
   if (token != null) {
     login = (
@@ -44,7 +26,7 @@ export default function Navbar() {
 
     register = (
       <Link className="text-light" to="/Profile">
-        Welcome {firstName}
+        Welcome {test}
       </Link>
     );
   } else {

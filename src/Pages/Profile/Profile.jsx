@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Navbar from "../../assets/Nav/Navbar";
 import Posts from "../../Components/Posts/Posts";
 
@@ -10,8 +11,74 @@ import {
   MDBCardBody,
   MDBCardText,
   MDBCardHeader,
+  MDBCardFooter,
+  MDBInput,
+  MDBCollapse,
+  MDBInputGroup,
 } from "mdb-react-ui-kit";
 export default function Profile() {
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [adress, setAdress] = useState("");
+  const [showShow, setShowShow] = useState(false);
+  const toggleShow = () => setShowShow(!showShow);
+  const [firstnameU, setFirstNameU] = useState("");
+  const [lastnameU, setLastNameU] = useState("");
+  const [emailU, setEmailU] = useState("");
+
+  const getUser = async () => {
+    const options = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `bearer ${localStorage.getItem("token")}`, //check l'autorisation du token
+      },
+    };
+    const response = await fetch(
+      " https://social-network-api.osc-fr1.scalingo.io/demo/user ", //API
+      options
+    );
+    const data = await response.json();
+    setFirstName(data.firstname);
+    setLastName(data.lastname);
+    setEmail(data.email);
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const updateProfile = async () => {
+    const options = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `bearer ${localStorage.getItem("token")}`, //check l'autorisation du token
+      },
+      body: {
+        firstname: firstnameU,
+        lastname: lastnameU,
+        email: emailU,
+      },
+    };
+    const response = await fetch(
+      " https://social-network-api.osc-fr1.scalingo.io/demo/user ",
+      options
+    );
+    const data = await response.json();
+    console.log("data", data);
+  };
+  const handleFirstname = (e) => {
+    setFirstNameU(e.target.value);
+  };
+  const handleLastName = (e) => {
+    setLastNameU(e.target.value);
+  };
+  const handleEmail = (e) => {
+    setEmailU(e.target.value);
+  };
+
   return (
     <div>
       <Navbar />
@@ -43,20 +110,15 @@ export default function Profile() {
                     border: "4px solid hsl(0, 0%, 98%)",
                   }}
                 />
-                <h1 className="fw-bold">FetchNet</h1>
-                <p className="text-muted">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Eveniet assumenda, commodi perferendis libero debitis harum ut
-                  sed nostrum minima aspernatur. .
-                </p>
+                <h1 className="fw-bold">{`${localStorage.getItem(
+                  "firstname"
+                )} ${localStorage.getItem("lastname")}`}</h1>
               </MDBCol>
               <MDBCol
                 lg="6"
                 md="8"
                 className="mb-4 mb-md-0 text-center text-lg-end"
-              >
-                <MDBBtn>Edit profile</MDBBtn>
-              </MDBCol>
+              ></MDBCol>
             </MDBRow>
           </MDBContainer>
         </div>
@@ -70,12 +132,19 @@ export default function Profile() {
             <MDBCardBody>
               <MDBRow>
                 <MDBCol sm="3">
-                  <MDBCardText>Full Name</MDBCardText>
+                  <MDBCardText>First Name</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="9">
-                  <MDBCardText className="text-muted">
-                    Johnatan Smith
-                  </MDBCardText>
+                  <MDBCardText className="text-muted">{firstname}</MDBCardText>
+                </MDBCol>
+              </MDBRow>
+              <hr />
+              <MDBRow>
+                <MDBCol sm="3">
+                  <MDBCardText>Last Name</MDBCardText>
+                </MDBCol>
+                <MDBCol sm="9">
+                  <MDBCardText className="text-muted">{lastname}</MDBCardText>
                 </MDBCol>
               </MDBRow>
               <hr />
@@ -84,20 +153,7 @@ export default function Profile() {
                   <MDBCardText>Email</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="9">
-                  <MDBCardText className="text-muted">
-                    example@example.com
-                  </MDBCardText>
-                </MDBCol>
-              </MDBRow>
-              <hr />
-              <MDBRow>
-                <MDBCol sm="3">
-                  <MDBCardText>Phone</MDBCardText>
-                </MDBCol>
-                <MDBCol sm="9">
-                  <MDBCardText className="text-muted">
-                    (097) 234-5678
-                  </MDBCardText>
+                  <MDBCardText className="text-muted">{email}</MDBCardText>
                 </MDBCol>
               </MDBRow>
               <hr />
@@ -106,9 +162,7 @@ export default function Profile() {
                   <MDBCardText>Mobile</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="9">
-                  <MDBCardText className="text-muted">
-                    (098) 765-4321
-                  </MDBCardText>
+                  <MDBCardText className="text-muted">{mobile}</MDBCardText>
                 </MDBCol>
               </MDBRow>
               <hr />
@@ -117,14 +171,48 @@ export default function Profile() {
                   <MDBCardText>Address</MDBCardText>
                 </MDBCol>
                 <MDBCol sm="9">
-                  <MDBCardText className="text-muted">
-                    Bay Area, San Francisco, CA
-                  </MDBCardText>
+                  <MDBCardText className="text-muted">{adress}</MDBCardText>
                 </MDBCol>
               </MDBRow>
             </MDBCardBody>
+            <MDBCardFooter>
+              <MDBBtn onClick={toggleShow} className="w-100">
+                Edit profile
+              </MDBBtn>
+            </MDBCardFooter>
           </MDBCard>
-        </MDBCol>{" "}
+
+          <MDBCollapse show={showShow}>
+            <div>
+              <MDBInputGroup>
+                <MDBInput
+                  onChange={handleFirstname}
+                  wrapperClass="mb-4 w-100"
+                  label="First Name"
+                  type="text"
+                  size="lg"
+                />
+                <MDBInput
+                  onChange={handleLastName}
+                  wrapperClass="mb-4 w-100"
+                  label="Last Name"
+                  type="text"
+                  size="lg"
+                />
+                <MDBInput
+                  onChange={handleEmail}
+                  wrapperClass="mb-4 w-100"
+                  label="Email address"
+                  type="email"
+                  size="lg"
+                />
+              </MDBInputGroup>
+              <MDBBtn onClick={updateProfile} className="m-2">
+                ADD
+              </MDBBtn>
+            </div>
+          </MDBCollapse>
+        </MDBCol>
         <div className="flex-grow-1 w-1">
           <Posts />
         </div>

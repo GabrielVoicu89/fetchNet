@@ -19,19 +19,19 @@ export default function Register() {
   const [message, setMessage] = useState("");
 
   const handleMail = (e) => {
-    setInputMail(e.target.value);
+    setInputMail(e.target.value); //récupère la valeur du mail
   };
 
   const handlePass = (e) => {
-    setInputPass(e.target.value);
+    setInputPass(e.target.value); //récupère la valeur du mot de passe
   };
 
   const handleFirstName = (e) => {
-    setInputFirstName(e.target.value);
+    setInputFirstName(e.target.value); //récupère la valeur du firstname
   };
 
   const handleLastName = (e) => {
-    setInputLastName(e.target.value);
+    setInputLastName(e.target.value); //récupère la valeur du lastname
   };
 
   const options = {
@@ -57,7 +57,7 @@ export default function Register() {
     console.log("array:", data);
     if (data.success === true) {
       setMessage(
-        <Link to="/Login">You are registered click here to connect</Link>
+        <Link to="/Login">You are registered click here to connect</Link> //lien de redirection une fois connécté
       );
     } else {
       setMessage(data.message);

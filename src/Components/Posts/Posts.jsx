@@ -7,6 +7,7 @@ import {
   MDBInputGroup,
   MDBInput,
 } from "mdb-react-ui-kit";
+
 import Post from "../Post/Post";
 import { useState, useEffect } from "react";
 
@@ -16,7 +17,7 @@ export default function Posts() {
   const toggleShow = () => setShowShow(!showShow);
   const token = localStorage.getItem("token");
   const [post, setPost] = useState("");
-  const [title, setTitle] = useState("");
+
   const [comment, setComment] = useState("");
 
   const options = {
@@ -25,7 +26,7 @@ export default function Posts() {
       "Content-Type": "application/json",
     },
   };
-
+  // function to recover the posts
   const getPosts = async () => {
     const response = await fetch(
       " https://social-network-api.osc-fr1.scalingo.io/demo/posts ",
@@ -34,17 +35,18 @@ export default function Posts() {
     const data = await response.json();
     const table = data.posts;
     setPosts(table);
-    console.log("table", table);
   };
 
   const optionscreate = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `bearer ${token}`,
+      Authorization: `bearer ${token}`, //check la valeur du token
     },
     body: JSON.stringify({
-      title: title,
+      title: `Posted by: ${localStorage.getItem(
+        "firstname"
+      )} ${localStorage.getItem("lastname")}`,
       content: post,
     }),
   };
@@ -53,9 +55,6 @@ export default function Posts() {
     setPost(e.target.value);
   };
 
-  const handleTitle = (e) => {
-    setTitle(e.target.value);
-  };
   // function for POSTING
   const clickAdd = async () => {
     const response = await fetch(
@@ -63,53 +62,44 @@ export default function Posts() {
       optionscreate
     );
     const data = await response.json();
-    console.log(data);
 
     if (data.success === true) {
       setShowShow(false);
       getPosts();
     } else {
       if (data.message === "Invalid token.") {
-        alert("Please login before posting");
+        //condition
+        alert("Please login before posting"); //alerte qui indique connectez vous pour postez
       } else {
         alert(data.message);
       }
     }
   };
-
-  //function for LIKING
-  const addLike = async (postId) => {
-    const optionlike = {
-      method: "POST",
+  const getUser = async () => {
+    const options = {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `bearer ${token}`,
+        Authorization: `bearer ${token}`, //check l'autorisation du token
       },
-      body: JSON.stringify({
-        postId: postId,
-      }),
     };
     const response = await fetch(
-      " https://social-network-api.osc-fr1.scalingo.io/demo/post/like",
-      optionlike
+      " https://social-network-api.osc-fr1.scalingo.io/demo/user ", //API
+      options
     );
     const data = await response.json();
-    if (data.success === true) {
-      getPosts();
-    } else {
-      if (data.message === "Invalid token.") {
-        alert("Please login before liking");
-      } else {
-        alert(data.message);
-      }
-    }
+    localStorage.setItem("firstname", data.firstname);
+    localStorage.setItem("lastname", data.lastname);
   };
 
+  if (token != null && localStorage.getItem("firstname") === null) {
+    getUser();
+  }
   useEffect(() => {
     getPosts();
   }, []);
 
-  // function for COMMENTING //
+  // function pour commenter //
   const addComment = async (postId, parComment) => {
     const optioncomment = {
       method: "POST",
@@ -131,36 +121,42 @@ export default function Posts() {
       getPosts();
     } else {
       if (data.message === "Invalid token.") {
-        alert("Please login before commenting");
+        //condition
+        alert("Please login before commenting"); //alerte connectez vous pour commentez
       } else {
         alert(data.message);
       }
     }
   };
   const handleComment = (e) => {
-    setComment(e.target.value);
+    setComment(e.target.value); //récupère les données saisies
   };
+
+  // function for adding likes
+
   const addLikes = async (postId) => {
     const optionlike = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `bearer ${token}`,
+        Authorization: `bearer ${token}`, //récupère la valeur du token
       },
       body: JSON.stringify({
         postId: postId,
       }),
     };
     const response = await fetch(
-      " https://social-network-api.osc-fr1.scalingo.io/demo/post/like",
+      " https://social-network-api.osc-fr1.scalingo.io/demo/post/like", //API
       optionlike
     );
     const data = await response.json();
     if (data.success === true) {
+      //condition
       getPosts();
     } else {
       if (data.message === "Invalid token.") {
-        alert("Please login before liked");
+        //condition
+        alert("Please login before liking"); //alerte connectez vous pour likez
       } else {
         alert(data.message);
       }
@@ -175,7 +171,7 @@ export default function Posts() {
             title={item.title}
             content={item.content}
             addComment={() => addComment(item._id, comment)}
-            addLike={() => addLikes(item._id)}
+            addLike={() => addLikes(item._id)} //pour incrémentez les likes
             likes={item.likes.length}
             handleComment={handleComment}
             comments={item.comments.map((comment) => (
@@ -209,14 +205,6 @@ export default function Posts() {
             </MDBBtn>
             <MDBCollapse show={showShow}>
               <div>
-                <MDBInput
-                  onChange={handleTitle}
-                  className="mt-3"
-                  wrapperClass="mb-4"
-                  label="Title"
-                  id="form1"
-                  type="text"
-                />
                 <MDBInputGroup style={{ height: 100 }}>
                   <textarea
                     onChange={handlePost}

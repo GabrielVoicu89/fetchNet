@@ -21,5 +21,5 @@ const Router = createBrowserRouter([
     path: "/Register",
     element: <Register />,
   },
-]);
+]); //page pour le login pour s'enregistrer pour le profile et pour l'accueil
 export default Router;

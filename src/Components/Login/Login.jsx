@@ -10,22 +10,22 @@ import {
 } from "mdb-react-ui-kit";
 import Navbar from "../../assets/Nav/Navbar";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [inputMail, setInputMail] = useState("");
   const [inputPass, setInputPass] = useState("");
   const [message, setMessage] = useState("");
 
-  //recovering the value of mail
+  //récupère la valeur du mail
   const handleMail = (e) => {
     setInputMail(e.target.value);
   };
-  //recovering the value of password
+  //récupère la valeur du mot de passe
   const handlePass = (e) => {
     setInputPass(e.target.value);
   };
-  // declaring the options for fetch
+  // déclare les options du fetch
   const options = {
     method: "POST",
     headers: {
@@ -37,6 +37,7 @@ export default function Login() {
     }),
   };
   const navigate = useNavigate();
+
   const clickLogin = async () => {
     const response = await fetch(
       " https://social-network-api.osc-fr1.scalingo.io/demo/login ",
@@ -45,10 +46,8 @@ export default function Login() {
     const data = await response.json();
 
     if (data.success === true) {
-      setMessage(<Link to="/">You are conected click here to redirect</Link>);
       navigate("/");
-
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.token); //récupère et stock le token
     } else {
       setMessage(data.message);
     }
