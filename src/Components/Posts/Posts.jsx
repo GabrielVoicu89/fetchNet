@@ -109,7 +109,7 @@ export default function Posts() {
     getPosts();
   }, []);
 
-  // function for COMMENTING
+  // function for COMMENTING //
   const addComment = async (postId, parComment) => {
     const optioncomment = {
       method: "POST",
