@@ -27,17 +27,18 @@ export default function Profile() {
   const [firstnameU, setFirstNameU] = useState("");
   const [lastnameU, setLastNameU] = useState("");
   const [emailU, setEmailU] = useState("");
+  const token = localStorage.getItem("token");
 
   const getUser = async () => {
     const options = {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `bearer ${localStorage.getItem("token")}`, //check l'autorisation du token
+        Authorization: `bearer ${token}`, //check l'autorisation du token
       },
     };
     const response = await fetch(
-      " https://social-network-api.osc-fr1.scalingo.io/demo/user ", //API
+      "https://social-network-api.osc-fr1.scalingo.io/demo/user", //API
       options
     );
     const data = await response.json();
@@ -54,27 +55,30 @@ export default function Profile() {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `bearer ${localStorage.getItem("token")}`, //check l'autorisation du token
+        Authorization: `bearer ${token}`,
       },
-      body: {
+      body: JSON.stringify({
         firstname: firstnameU,
         lastname: lastnameU,
         email: emailU,
-      },
+      }),
     };
     const response = await fetch(
-      " https://social-network-api.osc-fr1.scalingo.io/demo/user ",
+      "https://social-network-api.osc-fr1.scalingo.io/test/user",
       options
     );
     const data = await response.json();
-    console.log("data", data);
+    getUser();
   };
+
   const handleFirstname = (e) => {
     setFirstNameU(e.target.value);
   };
+
   const handleLastName = (e) => {
     setLastNameU(e.target.value);
   };
+
   const handleEmail = (e) => {
     setEmailU(e.target.value);
   };
@@ -110,9 +114,7 @@ export default function Profile() {
                     border: "4px solid hsl(0, 0%, 98%)",
                   }}
                 />
-                <h1 className="fw-bold">{`${localStorage.getItem(
-                  "firstname"
-                )} ${localStorage.getItem("lastname")}`}</h1>
+                <h1 className="fw-bold">{`${firstname} ${lastname}`}</h1>
               </MDBCol>
               <MDBCol
                 lg="6"
@@ -207,8 +209,14 @@ export default function Profile() {
                   size="lg"
                 />
               </MDBInputGroup>
-              <MDBBtn onClick={updateProfile} className="m-2">
-                ADD
+              <MDBBtn
+                onClick={() => {
+                  updateProfile();
+                  toggleShow();
+                }}
+                className="m-2"
+              >
+                UPDATE
               </MDBBtn>
             </div>
           </MDBCollapse>

@@ -15,7 +15,6 @@ export default function Navbar() {
   const clearStorage = () => {
     localStorage.clear();
   };
-  const test = localStorage.getItem("firstname");
 
   if (token != null) {
     login = (
@@ -26,7 +25,7 @@ export default function Navbar() {
 
     register = (
       <Link className="text-light" to="/Profile">
-        Welcome {test}
+        Welcome {localStorage.getItem("firstname")}
       </Link>
     );
   } else {
@@ -46,7 +45,7 @@ export default function Navbar() {
     <>
       <MDBNavbar dark bgColor="primary">
         <MDBContainer fluid>
-          <MDBNavbarBrand href="#">
+          <MDBNavbarBrand>
             <img
               src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.webp"
               height="30"

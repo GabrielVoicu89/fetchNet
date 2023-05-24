@@ -119,6 +119,7 @@ export default function Posts() {
     const data = await response.json();
     if (data.success === true) {
       getPosts();
+      setShowShow(false);
     } else {
       if (data.message === "Invalid token.") {
         //condition
@@ -170,7 +171,9 @@ export default function Posts() {
           <Post
             title={item.title}
             content={item.content}
-            addComment={() => addComment(item._id, comment)}
+            addComment={() =>
+              addComment(item._id, `${item.firstname}: ${comment}`)
+            }
             addLike={() => addLikes(item._id)} //pour incrémentez les likes
             likes={item.likes.length}
             handleComment={handleComment}
@@ -180,11 +183,11 @@ export default function Posts() {
                 className="m-2 "
                 style={{
                   borderRadius: "5px",
-                  height: "30px",
+                  height: "fit-content",
                   backgroundColor: "aliceblue",
                 }}
               >
-                <p style={{ marginLeft: "1em", marginTop: "0.1em" }}>
+                <p style={{ marginLeft: "1em", marginTop: "1em" }}>
                   {comment.content}
                 </p>
               </div>

@@ -60,7 +60,11 @@ export default function Post(props) {
           <MDBCardBody className="pb-0">
             <div className="comments">
               <div
-                style={{ display: "flex", flexDirection: "column", gap: "0em" }}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0em",
+                }}
               >
                 {props.comments}
               </div>
