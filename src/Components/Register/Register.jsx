@@ -34,20 +34,19 @@ export default function Register() {
     setInputLastName(e.target.value); //récupère la valeur du lastname
   };
 
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      firstname: firstName,
-      lastname: lastName,
-      email: inputMail,
-      password: inputPass,
-    }),
-  };
-
   const clickRegister = async () => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        firstname: firstName,
+        lastname: lastName,
+        email: inputMail,
+        password: inputPass,
+      }),
+    };
     const response = await fetch(
       " https://social-network-api.osc-fr1.scalingo.io/demo/register ",
       options

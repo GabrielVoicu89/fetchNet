@@ -10,24 +10,25 @@ import {
 import Post from "../Post/Post";
 import { useState, useEffect } from "react";
 
-export default function Posts() {
+export default function PostsProfile() {
   const [posts, setPosts] = useState([]);
   const [showShow, setShowShow] = useState(false);
   const toggleShow = () => setShowShow(!showShow);
   const token = localStorage.getItem("token");
   const [post, setPost] = useState("");
+
   const [comment, setComment] = useState("");
 
+  const options = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
   // function to recover the posts
   const getPosts = async () => {
-    const options = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
     const response = await fetch(
-      " https://social-network-api.osc-fr1.scalingo.io/demo/posts ",
+      " https://social-network-api.osc-fr1.scalingo.io/demo/posts?page=0&limit=3 ",
       options
     );
     const data = await response.json();
@@ -35,31 +36,30 @@ export default function Posts() {
     setPosts(table);
   };
 
+  const optionscreate = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `bearer ${token}`, //check la valeur du token
+    },
+    body: JSON.stringify({
+      title: `Posted by: ${localStorage.getItem(
+        "firstname"
+      )} ${localStorage.getItem("lastname")}`,
+      content: post,
+    }),
+  };
+
   const handlePost = (e) => {
     setPost(e.target.value);
   };
 
   // function for POSTING
-  const addPost = async () => {
-    const optionscreate = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `bearer ${token}`,
-      },
-      body: JSON.stringify({
-        title: `Posted by: ${localStorage.getItem(
-          "firstname"
-        )} ${localStorage.getItem("lastname")}`, // setting the title of the post with firstname and lastname from local storage
-        content: post,
-      }),
-    };
-
+  const clickAdd = async () => {
     const response = await fetch(
       " https://social-network-api.osc-fr1.scalingo.io/demo/post ",
       optionscreate
     );
-
     const data = await response.json();
 
     if (data.success === true) {
@@ -67,14 +67,13 @@ export default function Posts() {
       getPosts();
     } else {
       if (data.message === "Invalid token.") {
+        //condition
         alert("Please login before posting"); //alerte qui indique connectez vous pour postez
       } else {
         alert(data.message);
       }
     }
   };
-
-  // function for getting the user details
   const getUser = async () => {
     const options = {
       method: "GET",
@@ -88,22 +87,18 @@ export default function Posts() {
       options
     );
     const data = await response.json();
-    //setting lastname and firstname in local storage so we use getUser only once
     localStorage.setItem("firstname", data.firstname);
     localStorage.setItem("lastname", data.lastname);
   };
 
-  // recover the user details only if loged so it wount send a unnecessary query
   if (token != null && localStorage.getItem("firstname") === null) {
     getUser();
   }
-
-  // recovering the posts at the charging of the page
   useEffect(() => {
     getPosts();
   }, []);
 
-  // function for commeting
+  // function pour commenter //
   const addComment = async (postId, parComment) => {
     const optioncomment = {
       method: "POST",
@@ -133,12 +128,12 @@ export default function Posts() {
       }
     }
   };
-
   const handleComment = (e) => {
     setComment(e.target.value); //récupère les données saisies
   };
 
   // function for adding likes
+
   const addLikes = async (postId) => {
     const optionlike = {
       method: "POST",
@@ -168,7 +163,6 @@ export default function Posts() {
     }
   };
 
-  // render function
   const render = () => {
     return posts.map((item, index) => {
       return (
@@ -185,7 +179,6 @@ export default function Posts() {
             addLike={() => addLikes(item._id)} //pour incrémentez les likes
             likes={item.likes.length}
             handleComment={handleComment}
-            //mapping the comments
             comments={item.comments.map((comment) => (
               <div
                 key={comment._id}
@@ -224,7 +217,7 @@ export default function Posts() {
                     className="form-control"
                   />
                 </MDBInputGroup>
-                <MDBBtn className="m-2" onClick={addPost}>
+                <MDBBtn className="m-2" onClick={clickAdd}>
                   ADD
                 </MDBBtn>
               </div>

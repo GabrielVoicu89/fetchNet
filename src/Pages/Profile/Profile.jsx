@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../assets/Nav/Navbar";
-import Posts from "../../Components/Posts/Posts";
-
+import PostsProfile from "../../Components/Posts/PostsProfile";
 import {
   MDBContainer,
   MDBRow,
@@ -16,12 +15,15 @@ import {
   MDBCollapse,
   MDBInputGroup,
 } from "mdb-react-ui-kit";
+
 export default function Profile() {
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [adress, setAdress] = useState("");
+  const [mobileU, setMobileU] = useState("");
+  const [adressU, setAdressU] = useState("");
   const [showShow, setShowShow] = useState(false);
   const toggleShow = () => setShowShow(!showShow);
   const [firstnameU, setFirstNameU] = useState("");
@@ -45,6 +47,8 @@ export default function Profile() {
     setFirstName(data.firstname);
     setLastName(data.lastname);
     setEmail(data.email);
+    setAdress(data.occupation);
+    setMobile(data.age);
   };
   useEffect(() => {
     getUser();
@@ -61,6 +65,8 @@ export default function Profile() {
         firstname: firstnameU,
         lastname: lastnameU,
         email: emailU,
+        occupation: adressU,
+        age: mobileU,
       }),
     };
     const response = await fetch(
@@ -69,6 +75,13 @@ export default function Profile() {
     );
     const data = await response.json();
     getUser();
+    if (firstnameU != "") {
+      localStorage.setItem("firstname", firstnameU);
+    }
+    if (lastnameU != "") {
+      localStorage.setItem("lastname", lastnameU);
+    }
+    console.log("data", data);
   };
 
   const handleFirstname = (e) => {
@@ -81,6 +94,13 @@ export default function Profile() {
 
   const handleEmail = (e) => {
     setEmailU(e.target.value);
+  };
+
+  const handleAdress = (e) => {
+    setAdressU(e.target.value);
+  };
+  const handleMobile = (e) => {
+    setMobileU(e.target.value);
   };
 
   return (
@@ -105,7 +125,7 @@ export default function Profile() {
             <MDBRow className="d-flex justify-content-center align-items-center">
               <MDBCol lg="6" md="8" className="mb-4 mb-md-0 pt-4">
                 <img
-                  src="https://mdbootstrap.com/img/new/avatars/18.jpg"
+                  src="https://mdbootstrap.com/img/new/avatars/22.jpg"
                   className="rounded-circle float-none float-md-start me-4 mb-3"
                   alt=""
                   style={{
@@ -208,6 +228,20 @@ export default function Profile() {
                   type="email"
                   size="lg"
                 />
+                <MDBInput
+                  onChange={handleMobile}
+                  wrapperClass="mb-4 w-100"
+                  label="Mobile"
+                  type="number"
+                  size="lg"
+                />
+                <MDBInput
+                  onChange={handleAdress}
+                  wrapperClass="mb-4 w-100"
+                  label="Adress"
+                  type="text"
+                  size="lg"
+                />
               </MDBInputGroup>
               <MDBBtn
                 onClick={() => {
@@ -222,7 +256,7 @@ export default function Profile() {
           </MDBCollapse>
         </MDBCol>
         <div className="flex-grow-1 w-1">
-          <Posts />
+          <PostsProfile />
         </div>
       </div>
     </div>

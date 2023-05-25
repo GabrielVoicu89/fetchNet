@@ -5,56 +5,29 @@ import {
   MDBBreadcrumb,
   MDBBreadcrumbItem,
 } from "mdb-react-ui-kit";
+import { useState } from "react";
 
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const token = localStorage.getItem("token");
-  let login;
-  let register;
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
   const clearStorage = () => {
     localStorage.clear();
   };
-
-  if (token != null) {
-    login = (
-      <Link className="text-light" to="/Login" onClick={clearStorage}>
-        Logout
-      </Link>
-    );
-
-    register = (
-      <Link className="text-light" to="/Profile">
-        Welcome {localStorage.getItem("firstname")}
-      </Link>
-    );
-  } else {
-    login = (
-      <Link className="text-light" to="/Login">
-        Login
-      </Link>
-    );
-    register = (
-      <Link className="text-light" to="/Register">
-        Register
-      </Link>
-    );
-  }
 
   return (
     <>
       <MDBNavbar dark bgColor="primary">
         <MDBContainer fluid>
-          <MDBNavbarBrand>
+          <MDBNavbarBrand href="/">
             <img
-              src="https://mdbootstrap.com/img/logo/mdb-transaprent-noshadows.webp"
+              src="https://cdn.discordapp.com/attachments/1094943516251127858/1111236887760347136/test-fotor-bg-remover-20230525121825.png"
               height="30"
               alt=""
               loading="lazy"
             />
-            <Link to="/" className="text-light">
-              FetchNet
-            </Link>
+            FetchNet
           </MDBNavbarBrand>
           <nav aria-label="breadcrumb">
             <MDBBreadcrumb>
@@ -63,8 +36,32 @@ export default function Navbar() {
                   Home
                 </Link>
               </MDBBreadcrumbItem>
-              <MDBBreadcrumbItem>{login}</MDBBreadcrumbItem>
-              <MDBBreadcrumbItem>{register}</MDBBreadcrumbItem>
+              <MDBBreadcrumbItem>
+                {token != null ? (
+                  <Link
+                    className="text-light"
+                    to="/Login"
+                    onClick={clearStorage}
+                  >
+                    Logout
+                  </Link>
+                ) : (
+                  <Link className="text-light" to="/Login">
+                    Login
+                  </Link>
+                )}
+              </MDBBreadcrumbItem>
+              <MDBBreadcrumbItem>
+                {token != null ? (
+                  <Link className="text-light" to="/Profile">
+                    Welcome {localStorage.getItem("firstname")}
+                  </Link>
+                ) : (
+                  <Link className="text-light" to="/Register">
+                    Register
+                  </Link>
+                )}
+              </MDBBreadcrumbItem>
             </MDBBreadcrumb>
           </nav>
         </MDBContainer>

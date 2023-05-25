@@ -6,7 +6,6 @@ import {
   MDBCard,
   MDBCardBody,
   MDBInput,
-  MDBCheckbox,
 } from "mdb-react-ui-kit";
 import Navbar from "../../assets/Nav/Navbar";
 import { useState } from "react";
@@ -84,13 +83,6 @@ export default function Login() {
                   id="formControlLg"
                   type="password"
                   size="lg"
-                />
-
-                <MDBCheckbox
-                  name="flexCheck"
-                  id="flexCheckDefault"
-                  className="mb-4"
-                  label="Remember password"
                 />
 
                 <MDBBtn onClick={clickLogin} size="lg">
